@@ -1,1 +1,4 @@
-SidaMenu is a modmenu that gives you sida without knowing it
+<h1 align="center">SidaMenu</h1>
+<p align="center">
+  <img src="sidapng.png" alt="sidapng" width="500">
+</p>
