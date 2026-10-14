@@ -4,7 +4,7 @@ using Hazel;
 using Steamworks;
 using UnityEngine;
 
-namespace MenuTodoEpico
+namespace SidaMenu
 {
     public partial class MenuUI : MonoBehaviour
     {
@@ -55,7 +55,10 @@ namespace MenuTodoEpico
 
                     break;
                 case 2: // Host
-
+                    if (GUI.Button(new Rect(0, 0, 100, 30), "Start Game"))
+                    {
+                        AmongUsClient.Instance.StartGame();
+                    }
                     break;
                 case 3: // Misc
 

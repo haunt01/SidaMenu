@@ -1,7 +1,7 @@
 ﻿using AmongUs;
 using AmongUs.GameOptions;
 using UnityEngine;
-namespace SidaMenu.Features
+namespace SidaMenu
 {
     public class SelfFeatures
     {

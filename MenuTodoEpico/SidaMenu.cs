@@ -1,8 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Unity.IL2CPP;
-using MenuTodoEpico;
 using UnityEngine.Analytics;
-namespace MenuTodoEpico
+namespace SidaMenu
 {
     [BepInAutoPlugin]
     [BepInProcess("Among Us.exe")]
