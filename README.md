@@ -1,3 +1,3 @@
 <div align="center">
-#  SidaMenu
+SidaMenu
 </div>
