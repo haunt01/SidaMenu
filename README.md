@@ -2,7 +2,7 @@
 <p align="center">
   <img src="sidapng.png" alt="sidapng" width="500">
 </p>
-SidaMenu is a Mod Menu designed to give the best experience to the user.
+SidaMenu is a Mod Menu designed to give the best experience to the user.  
 Example:
 <p align="center">
   <img src="example.png" alt="sidapng" width="500">
