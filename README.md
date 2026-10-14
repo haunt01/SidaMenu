@@ -6,4 +6,4 @@
   SidaMenu is a ModMenu designed to give the best experience to the user <br>
 </p>
 Example:
-<img src="example.png" alt="sidapng" width="500">
+<img src="example.png" alt="sidapng">
