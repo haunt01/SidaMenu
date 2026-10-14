@@ -53,6 +53,17 @@ namespace SidaMenu
 
                     break;
                 case 2: // Host
+                    if (GUI.Button(new Rect(0, 0, 100, 30), "Start Game"))
+                    {
+                        AmongUsClient.Instance.StartGame();
+                    }
+                    if (GUI.Button(new Rect(0, 40, 100, 30), "Reset Tasks"))
+                    {
+                        if (ShipStatus.Instance != null)
+                        {
+                            ShipStatus.Instance.Begin(); // this resets shipstatus and makes the players thing the tasks has been resetted 
+                        }
+                    }
                     break;
                 case 3: // Misc
 
