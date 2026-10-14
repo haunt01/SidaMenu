@@ -1,4 +1,4 @@
-﻿using AmongUs.Data;
+using AmongUs.Data;
 using AmongUs.Data.Player;
 using Hazel;
 using Steamworks;
@@ -9,11 +9,10 @@ namespace MenuTodoEpico
     public partial class MenuUI : MonoBehaviour
     {
         public static bool showMenu = true;
-        public Rect windowRect = new Rect(20, 20, 667, 467); // pendejos con sida este es mi codigo el q lo robe tendra problemas conmigo escucharon ojetes
+        public Rect windowRect = new Rect(20, 20, 667, 467);
         int selectedGroup = 0;
         public string[] groups = new string[] { "Self", "Visuals", "Host", "Misc", "Settings", "About" };
         public string version = "v1.0.0-tuffBeta";
-
         void Start() {
             if (showMenu)
             {
@@ -25,8 +24,7 @@ namespace MenuTodoEpico
             {
                 showMenu = !showMenu;
             }
-            PlayerBanData playerBanData = new PlayerBanData();
-            playerBanData.BanPoints = 0; // probably wont work :(
+            
         }
 
         void OnGUI() {
@@ -40,17 +38,10 @@ namespace MenuTodoEpico
             GUILayout.BeginVertical(); // holy ai moment
             for (int i = 0; i < groups.Length; i++)
             {
-                // Save the original background color
-                Color originalColor = GUI.backgroundColor;
-
-                // Draw the button. If clicked, update selectedGroup.
                 if (GUILayout.Button(groups[i], GUILayout.Width(167), GUILayout.Height(17))) // jajajajajajajaj 67 jajajaja sin semen ajkajakjakj
                 {
                     selectedGroup = i;
                 }
-
-                // Restore the original color for the next button
-                GUI.backgroundColor = originalColor;
             }
             GUILayout.EndVertical(); // end of holy ai moment
 
