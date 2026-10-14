@@ -22,10 +22,5 @@ namespace SidaMenu
                 PerformanceReporting.enabled = false;
             }
         }
-
-        public void PanicMode() // me da paja despues se hace jioajkjakajkjakja que vago q soy
-        { 
-            
-        }
     }
 }
