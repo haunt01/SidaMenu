@@ -48,17 +48,11 @@ namespace SidaMenu
             GUILayout.BeginArea(new Rect(180, 20, 515, 570)); // Shows where the content is gonna be (in this case is the right side of the menu)
             switch (selectedGroup) {
                 case 0: // Self
-                    States.noClip = GUILayout.Toggle(States.noClip, "NoClip");
-                    States.speedHack = GUILayout.Toggle(States.speedHack, "SpeedHack");
                     break;
                 case 1: // Visuals
 
                     break;
                 case 2: // Host
-                    if (GUI.Button(new Rect(0, 0, 100, 30), "Start Game"))
-                    {
-                        AmongUsClient.Instance.StartGame();
-                    }
                     break;
                 case 3: // Misc
 
