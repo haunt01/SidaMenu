@@ -1,4 +1,4 @@
-﻿using AmongUs.Data;
+using AmongUs.Data;
 using AmongUs.Data.Player;
 using Hazel;
 using Steamworks;
