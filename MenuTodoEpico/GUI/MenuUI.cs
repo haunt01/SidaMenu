@@ -59,7 +59,7 @@ namespace SidaMenu
                     {
                         if (ShipStatus.Instance != null && AmongUsClient.Instance.AmHost == true)
                         {
-                            ShipStatus.Instance.Begin(); // this resets shipstatus and makes the players thing the tasks has been resetted 
+                            ShipStatus.Instance.Begin(); // this resets shipstatus and makes the players think the tasks has been resetted 
                         }
                     }
                     break;
