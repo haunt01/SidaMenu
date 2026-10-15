@@ -11,12 +11,12 @@ namespace SidaMenu
         public static bool showMenu = true;
         public Rect windowRect = new Rect(20, 20, 667, 467);
         int selectedGroup = 0;
-        public string[] groups = new string[] { "Self", "Visuals", "Host", "Misc", "Settings", "About" };
+        public string[] groups = new string[] { "Self", "Visuals", "Host", "Misc", "About" };
         public string version = "v1.0.0-tuffBeta";
         void Start() {
             if (showMenu)
             {
-                selectedGroup = 5; // shows the about tab so the user sees the new content/updates
+                selectedGroup = 4; // shows the about tab so the user sees the new content/updates
             }
         }
         void Update() {
@@ -48,35 +48,29 @@ namespace SidaMenu
             GUILayout.BeginArea(new Rect(180, 20, 515, 570)); // Shows where the content is gonna be (in this case is the right side of the menu)
             switch (selectedGroup) {
                 case 0: // Self
+
                     break;
                 case 1: // Visuals
 
                     break;
                 case 2: // Host
-                    if (GUI.Button(new Rect(0, 0, 100, 30), "Start Game"))
-                    {
-                        AmongUsClient.Instance.StartGame();
-                    }
+
+                    break;
+                case 3: // Misc
+                    GUILayout.Label("Host:");
                     if (GUI.Button(new Rect(0, 40, 100, 30), "Reset Tasks"))
                     {
-                        if (ShipStatus.Instance != null)
+                        if (ShipStatus.Instance != null && AmongUsClient.Instance.AmHost == true)
                         {
                             ShipStatus.Instance.Begin(); // this resets shipstatus and makes the players thing the tasks has been resetted 
                         }
                     }
                     break;
-                case 3: // Misc
-
-                    break;
-                case 4: // Settings
-
-                    break;
-                case 5: // About
+                case 4: // About
                     GUILayout.Label($"Welcome to SidaMenu!\nWe appreciate you using our ModMenu.\nModMenu's version: {version}\nDeveloper's Github: https://github.com/haunt01/");
                     break;
             }
             GUILayout.EndArea();
-
             GUI.DragWindow();
         }
     }
