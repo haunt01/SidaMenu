@@ -54,16 +54,20 @@ namespace SidaMenu
 
                     break;
                 case 2: // Host
-
-                    break;
-                case 3: // Misc
-                    GUILayout.Label("Host:");
-                    if (GUI.Button(new Rect(0, 40, 100, 30), "Reset Tasks"))
+                    GUILayout.Label("Ship:");
+                    if (GUI.Button(new Rect(0, 20, 467, 30), "Reset Tasks"))
                     {
                         if (ShipStatus.Instance != null && AmongUsClient.Instance.AmHost == true)
                         {
                             ShipStatus.Instance.Begin(); // this resets shipstatus and makes the players thing the tasks has been resetted 
                         }
+                    }
+                    break;
+                case 3: // Misc
+                    GUILayout.Label("Semi Exploit:");
+                    if (GUI.Button(new Rect(0, 20, 467, 30), "Invisible"))
+                    {
+                        AmongUsClient.Instance.Despawn(PlayerControl.LocalPlayer.MyPhysics); // despawns player control
                     }
                     break;
                 case 4: // About
