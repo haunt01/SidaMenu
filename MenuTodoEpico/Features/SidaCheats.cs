@@ -1,15 +1,24 @@
-﻿using AmongUs;
-using AmongUs.GameOptions;
-using AmongUs.InnerNet.GameDataMessages;
+﻿using AmongUs.GameOptions;
 using HarmonyLib;
-using Hazel;
-using InnerNet;
 using UnityEngine;
+
 namespace SidaMenu
 {
     public class SelfFeatures
     {
+        public static void noClip() 
+        {
 
+        }
+        public static void Teleport() 
+        {
+            if (!States.tpToCursor) return;
+            if (Input.GetMouseButtonDown(1))
+            {
+                Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(worldPos);
+            }
+        }
     }   
 
     public class VisualsFeatures
@@ -17,21 +26,17 @@ namespace SidaMenu
 
     }
 
+    public class HostFeatures
+    {
+        public static void MorePlayers(int maxPlayers)
+        {
+            if (!States.morePlayers) return;
+            GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.MaxPlayers, maxPlayers);
+        }
+    }
+
     public class MiscFeatures
     {
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        public static class OverflowPatch
-        {
 
-            public static void Postfix()
-            {
-                if (States.overflow == true) return;
-                for (int i = 0; i < 1000; i++)
-                {
-                    var go = new UnityEngine.GameObject();
-                    UnityEngine.Object.Destroy(go);
-                }
-            }
-        }
     }
 }

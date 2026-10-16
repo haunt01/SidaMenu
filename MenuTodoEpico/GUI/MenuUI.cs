@@ -1,6 +1,7 @@
 using AmongUs.Data;
 using AmongUs.Data.Player;
 using Hazel;
+using Rewired.UI.ControlMapper;
 using Steamworks;
 using UnityEngine;
 
@@ -13,28 +14,37 @@ namespace SidaMenu
         int selectedGroup = 0;
         public string[] groups = new string[] { "Self", "Visuals", "Host", "Misc", "About" };
         public string version = "v1.0.0-tuffBeta";
-        void Start() {
+        void Start() 
+        {
             if (showMenu)
             {
                 selectedGroup = 4; // shows the about tab so the user sees the new content/updates
             }
         }
-        void Update() {
+        void Update() 
+        {
             if (Input.GetKeyDown(KeyCode.Delete))
             {
                 showMenu = !showMenu;
             }
-            
+            DataManager.Player.Ban.BanPoints = 0; // removes ban points so the player doesn't get banned
+
+
+            //calls
+            SelfFeatures.Teleport();
+            HostFeatures.MorePlayers(255);
         }
 
-        void OnGUI() {
+        void OnGUI() 
+        {
             if (showMenu)
             {
                 windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, $"SidaMenu {version}");
             }
         }
 
-        void WindowFunction(int windowID) {
+        void WindowFunction(int windowID) 
+        {
             GUILayout.BeginVertical(); // holy ai moment
             for (int i = 0; i < groups.Length; i++)
             {
@@ -46,9 +56,11 @@ namespace SidaMenu
             GUILayout.EndVertical(); // end of holy ai moment
 
             GUILayout.BeginArea(new Rect(180, 20, 515, 570)); // Shows where the content is gonna be (in this case is the right side of the menu)
-            switch (selectedGroup) {
+            switch (selectedGroup) 
+            {
                 case 0: // Self
-
+                    GUILayout.Label("Movement:");       
+                    States.tpToCursor = GUI.Toggle(new Rect(0, 20, 467, 30), States.tpToCursor, "Teleport to Cursor");
                     break;
                 case 1: // Visuals
 
@@ -62,12 +74,19 @@ namespace SidaMenu
                             ShipStatus.Instance.Begin(); // this resets shipstatus and makes the players think the tasks has been resetted 
                         }
                     }
+                    GUI.Label(new Rect(0, 60, 467, 30), "Lobby:");
+                    States.morePlayers = GUI.Toggle(new Rect(0, 80, 467, 30), States.morePlayers, "Set Max Players to 255");
                     break;
                 case 3: // Misc
                     GUILayout.Label("Semi Exploit:");
                     if (GUI.Button(new Rect(0, 20, 467, 30), "Invisible"))
                     {
-                        AmongUsClient.Instance.Despawn(PlayerControl.LocalPlayer.MyPhysics); // despawns player control
+                        AmongUsClient.Instance.Despawn(PlayerControl.LocalPlayer.MyPhysics); // despawns player control and makes the user invisible for others
+                    }
+                    GUI.Label(new Rect(0, 60, 467, 30), "Spoofing:");
+                    if (GUI.Button(new Rect(0, 80, 467, 20), $"Spoof Platform To {SidaSpoofer.platforms[SidaSpoofer.selectedPlatform]}"))
+                    {
+                        SidaSpoofer.selectedPlatform = (SidaSpoofer.selectedPlatform + 1) % SidaSpoofer.platforms.Length;
                     }
                     break;
                 case 4: // About
