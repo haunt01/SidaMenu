@@ -13,13 +13,13 @@ namespace SidaMenu
         public static bool showMenu = true;
         public Rect windowRect = new Rect(20, 20, 667, 467);
         int selectedGroup = 0;
-        public string[] groups = new string[] { "Self", "Visuals", "Host", "Misc", "About" };
+        public string[] groups = new string[] { "Self", "Host", "Misc", "About" };
         public string version = "v1.0.0-tuffBeta";
         void Start() 
         {
             if (showMenu)
             {
-                selectedGroup = 4; // shows the about tab so the user sees the new content/updates
+                selectedGroup = 3; // shows the about tab so the user sees the new content/updates
             }
         }
         void Update() 
@@ -73,13 +73,10 @@ namespace SidaMenu
             {
                 case 0: // Self
                     GUILayout.Label("Movement:");
-                    States.noClip = GUI.Toggle(new Rect(0, 20, 467, 15), States.noClip, "No Clip");
-                    States.tpToCursor = GUI.Toggle(new Rect(0, 40, 467, 15), States.tpToCursor, "Teleport to Cursor");
+                    States.noClip = GUI.Toggle(new Rect(0, 20, 467, 17), States.noClip, "No Clip");
+                    States.tpToCursor = GUI.Toggle(new Rect(0, 40, 467, 17), States.tpToCursor, "Teleport to Cursor");
                     break;
-                case 1: // Visuals
-
-                    break;
-                case 2: // Host
+                case 1: // Host
                     GUILayout.Label("Ship:");
                     if (GUI.Button(new Rect(0, 20, 467, 30), "Reset Tasks"))
                     {
@@ -89,8 +86,8 @@ namespace SidaMenu
                         }
                     }
                     GUI.Label(new Rect(0, 60, 467, 30), "Lobby:");
-                    States.morePlayers = GUI.Toggle(new Rect(0, 80, 467, 15), States.morePlayers, "Set Max Players to 255");
-                    States.noEndGame = GUI.Toggle(new Rect(0, 100, 467, 15), States.noEndGame, "Force No End Game");
+                    States.morePlayers = GUI.Toggle(new Rect(0, 80, 467, 17), States.morePlayers, "Set Max Players to 255");
+                    States.noEndGame = GUI.Toggle(new Rect(0, 100, 467, 17), States.noEndGame, "Force No End Game");
                     if (GUI.Button(new Rect(0, 140, 467, 30), "Force Start Game"))
                     {
                         if (AmongUsClient.Instance.AmHost)
@@ -106,7 +103,7 @@ namespace SidaMenu
                         }
                     }
                     break;
-                case 3: // Misc
+                case 2: // Misc
                     GUILayout.Label("Semi Exploit:");
                     if (GUI.Button(new Rect(0, 20, 467, 30), "Invisible"))
                     {
@@ -122,7 +119,7 @@ namespace SidaMenu
                         SidaSpoofer.selectedPlatform = (SidaSpoofer.selectedPlatform + 1) % SidaSpoofer.platforms.Length;
                     }
                     break;
-                case 4: // About
+                case 3: // About
                     GUILayout.Label($"Welcome to SidaMenu!\nWe appreciate you using our ModMenu.\nModMenu's version: {version}\nDeveloper's Github: https://github.com/haunt01/");
                     if (GUI.Button(new Rect(0, 120, 467, 30), "Promote Cheat")) // Innerslop decided to remove the chat cooldown in RpcSendChat, so we can send 6 messages at ones. Thank you Innersloth.
                     {

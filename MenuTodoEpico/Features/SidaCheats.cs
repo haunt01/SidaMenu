@@ -19,11 +19,6 @@ namespace SidaMenu
         }
     }   
 
-    public class VisualsFeatures
-    {
-
-    }
-
     public class HostFeatures
     {
         public static void MorePlayers(int maxPlayers)
