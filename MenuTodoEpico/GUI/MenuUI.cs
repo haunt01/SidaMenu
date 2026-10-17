@@ -104,7 +104,7 @@ namespace SidaMenu
                     }
                     break;
                 case 2: // Misc
-                    GUILayout.Label("Semi Exploit:");
+                    GUILayout.Label("<color=red>HOLD ON! Some of these features can get you banned from the lobby.</color>");
                     if (GUI.Button(new Rect(0, 20, 467, 30), "Invisible"))
                     {
                         AmongUsClient.Instance.Despawn(PlayerControl.LocalPlayer.MyPhysics); // despawns player control and makes the user invisible for others

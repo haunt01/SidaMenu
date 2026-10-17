@@ -14,13 +14,15 @@ namespace SidaMenu
             Platforms.Switch
         };
 
-        [HarmonyPatch(typeof(PlatformSpecificData), nameof(PlatformSpecificData.Serialize))]
+        [HarmonyPatch(typeof(Constants), nameof(Constants.GetPlatformType))]
         public static class SpoofPlatformPatch
         {
-            public static void Prefix(PlatformSpecificData __instance)
+            public static bool Prefix(ref Platforms __result)
             {
-                if (!States.spoofPlatform) return;
-                __instance.Platform = platforms[selectedPlatform];
+                if (!States.spoofPlatform) return true;
+
+                __result = platforms[selectedPlatform];
+                return false; 
             }
         }
     }

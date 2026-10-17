@@ -87,6 +87,11 @@ namespace SidaMenu
             mw.Recycle();
         }
 
+        public static void GlitchCounter()
+        {
+
+        }
+
         public static void Promotion()
         {
             PlayerControl.LocalPlayer.RpcSendChat("SidaMenu is the best Mod Menu that you can get RN!\n GO get it at:\n ｈｔｔｐｓ：／／ｇｉｔｈｕｂ．ｃｏｍ／ｈａｕｎｔ０１／ＳｉｄａＭｅｎｕ");
