@@ -1,8 +1,9 @@
-using AmongUs.Data;
+﻿using AmongUs.Data;
 using AmongUs.Data.Player;
 using Hazel;
 using Rewired.UI.ControlMapper;
 using Steamworks;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace SidaMenu
@@ -28,7 +29,19 @@ namespace SidaMenu
                 showMenu = !showMenu;
             }
             DataManager.Player.Ban.BanPoints = 0; // removes ban points so the player doesn't get banned
-
+            
+            if (PlayerControl.LocalPlayer != null)
+            {
+                // noclip
+                if (States.noClip)
+                {
+                    PlayerControl.LocalPlayer.Collider.enabled = !States.noClip; 
+                }
+                else
+                {
+                    PlayerControl.LocalPlayer.Collider.enabled = true;
+                }
+            }
 
             //calls
             SelfFeatures.Teleport();
@@ -59,8 +72,9 @@ namespace SidaMenu
             switch (selectedGroup) 
             {
                 case 0: // Self
-                    GUILayout.Label("Movement:");       
-                    States.tpToCursor = GUI.Toggle(new Rect(0, 20, 467, 30), States.tpToCursor, "Teleport to Cursor");
+                    GUILayout.Label("Movement:");
+                    States.noClip = GUI.Toggle(new Rect(0, 20, 467, 15), States.noClip, "No Clip");
+                    States.tpToCursor = GUI.Toggle(new Rect(0, 40, 467, 15), States.tpToCursor, "Teleport to Cursor");
                     break;
                 case 1: // Visuals
 
@@ -75,7 +89,22 @@ namespace SidaMenu
                         }
                     }
                     GUI.Label(new Rect(0, 60, 467, 30), "Lobby:");
-                    States.morePlayers = GUI.Toggle(new Rect(0, 80, 467, 30), States.morePlayers, "Set Max Players to 255");
+                    States.morePlayers = GUI.Toggle(new Rect(0, 80, 467, 15), States.morePlayers, "Set Max Players to 255");
+                    States.noEndGame = GUI.Toggle(new Rect(0, 100, 467, 15), States.noEndGame, "Force No End Game");
+                    if (GUI.Button(new Rect(0, 140, 467, 30), "Force Start Game"))
+                    {
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            AmongUsClient.Instance.StartGame(); 
+                        }
+                    }
+                    if (GUI.Button(new Rect(0, 180, 467, 30), "Force End Game"))
+                    {
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            GameManager.Instance.RpcEndGame(GameOverReason.CrewmateDisconnect, true);
+                        }
+                    }
                     break;
                 case 3: // Misc
                     GUILayout.Label("Semi Exploit:");
@@ -83,15 +112,27 @@ namespace SidaMenu
                     {
                         AmongUsClient.Instance.Despawn(PlayerControl.LocalPlayer.MyPhysics); // despawns player control and makes the user invisible for others
                     }
-                    GUI.Label(new Rect(0, 60, 467, 30), "Spoofing:");
-                    if (GUI.Button(new Rect(0, 80, 467, 20), $"Spoof Platform To {SidaSpoofer.platforms[SidaSpoofer.selectedPlatform]}"))
+                    if (GUI.Button(new Rect(0, 60, 467, 30), "Quick Red Chat"))
+                    {
+                        MiscFeatures.RedChat();
+                    }
+                    GUI.Label(new Rect(0, 100, 467, 30), "Spoofing:");
+                    if (GUI.Button(new Rect(0, 120, 467, 20), $"Spoof Platform To {SidaSpoofer.platforms[SidaSpoofer.selectedPlatform]}"))
                     {
                         SidaSpoofer.selectedPlatform = (SidaSpoofer.selectedPlatform + 1) % SidaSpoofer.platforms.Length;
                     }
                     break;
                 case 4: // About
                     GUILayout.Label($"Welcome to SidaMenu!\nWe appreciate you using our ModMenu.\nModMenu's version: {version}\nDeveloper's Github: https://github.com/haunt01/");
+                    if (GUI.Button(new Rect(0, 120, 467, 30), "Promote Cheat")) // Innerslop decided to remove the chat cooldown in RpcSendChat, so we can send 6 messages at ones. Thank you Innersloth.
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            MiscFeatures.Promotion();                         
+                        }
+                    }
                     break;
+                    
             }
             GUILayout.EndArea();
             GUI.DragWindow();
