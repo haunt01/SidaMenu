@@ -2,6 +2,8 @@
 <p align="center">
   <img src="sidapng.png" alt="sidapng" width="500"> <br>
 </p>
+# ⚠️CURRENTLY ON DEVELOPMENT⚠️
+
 SidaMenu is a Among Us mod that aims to give the best experience to the user with new features upcoming.
 
 We have a discord so you can share your ideas! https://discord.gg/gaQvGxK5F8
