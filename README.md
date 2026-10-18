@@ -6,7 +6,7 @@
   </a>
 </p>
 Features: <br>
-# Noclip <br>
+Noclip <br>
 Teleport <br>
 Be Invisible <br>
 Red Chat <br>
