@@ -5,9 +5,10 @@
     <img hspace="6" src="https://img.shields.io/badge/Join%20Us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
   </a>
 </p>
-
-<p>
-  SidaMenu is a ModMenu designed to give the best experience to the user <br>
-</p>
-Example:
-<img src="example.png" alt="sidapng">
+Features:
+- Noclip
+- Teleport 
+- Be Invisible
+- Red Chat
+- Set Max Players to 255
+and more!
