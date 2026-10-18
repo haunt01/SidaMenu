@@ -5,10 +5,10 @@
     <img hspace="6" src="https://img.shields.io/badge/Join%20Us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
   </a>
 </p>
-Features:
-* Noclip
-* Teleport 
-* Be Invisible
-* Red Chat
-* Set Max Players to 255
+Features: <br>
+Noclip <br>
+Teleport <br>
+Be Invisible <br>
+Red Chat <br>
+Set Max Players to 255 <br>
 and more!
