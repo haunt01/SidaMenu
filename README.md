@@ -10,4 +10,5 @@ We have a discord so you can share your ideas! https://discord.gg/gaQvGxK5F8
 - Be Invisible
 - Red Quick Chat
 - Windows Sound Exploit (Only works if the other user is using Hydra)
+
 and more!
