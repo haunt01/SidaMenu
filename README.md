@@ -2,6 +2,7 @@
 <p align="center">
   <img src="sidapng.png" alt="sidapng" width="500">
 </p>
+https://discord.gg/gaQvGxK5F8
 <p>
   SidaMenu is a ModMenu designed to give the best experience to the user <br>
 </p>
