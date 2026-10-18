@@ -7,6 +7,7 @@ SidaMenu is a Among Us mod that aims to give the best experience to the user wit
 We have a discord so you can share your ideas! https://discord.gg/gaQvGxK5F8
 
 # Features
+- Reset Tasks (Host-Only)
 - Be Invisible
 - Red Quick Chat
 - Windows Sound Exploit (Only works if the other user is using Hydra)
