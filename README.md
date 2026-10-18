@@ -1,14 +1,5 @@
 <h1 align="center">🦠SidaMenu🦠</h1>
 <p align="center">
   <img src="sidapng.png" alt="sidapng" width="500"> <br>
-    <a href="https://discord.gg/gaQvGxK5F8">
-    <img hspace="6" src="https://img.shields.io/badge/Join%20Us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
-  </a>
 </p>
-Features: <br>
-Noclip <br>
-Teleport <br>
-Be Invisible <br>
-Red Chat <br>
-Set Max Players to 255 <br>
-and more!
+We have a discord so you can share your ideas! https://discord.gg/gaQvGxK5F8
