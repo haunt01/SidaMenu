@@ -6,9 +6,9 @@
   </a>
 </p>
 Features:
-- Noclip
-- Teleport 
-- Be Invisible
-- Red Chat
-- Set Max Players to 255
+Noclip
+Teleport 
+Be Invisible
+Red Chat
+Set Max Players to 255
 and more!
