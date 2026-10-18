@@ -1,4 +1,5 @@
 ﻿using AmongUs.GameOptions;
+using AmongUs.InnerNet.GameDataMessages;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -87,9 +88,16 @@ namespace SidaMenu
             mw.Recycle();
         }
 
-        public static void GlitchCounter()
+        public static void WindowsNotificationExploit() // only works if someone is using Hydra.
         {
+            if (AmongUsClient.Instance == null) return;
+            if (PlayerControl.LocalPlayer == null) return;
 
+            try
+            {
+                PlayerControl.LocalPlayer.RpcSendChat("hello\u0007\u0007\u0007");
+            }
+            catch { }
         }
 
         public static void Promotion()

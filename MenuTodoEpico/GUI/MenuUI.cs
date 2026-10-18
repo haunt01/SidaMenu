@@ -5,6 +5,7 @@ using Rewired.UI.ControlMapper;
 using Steamworks;
 using System.Threading.Tasks;
 using UnityEngine;
+using static SidaMenu.SelfFeatures;
 
 namespace SidaMenu
 {
@@ -113,8 +114,12 @@ namespace SidaMenu
                     {
                         MiscFeatures.RedChat();
                     }
-                    GUI.Label(new Rect(0, 100, 467, 30), "Spoofing:");
-                    if (GUI.Button(new Rect(0, 120, 467, 20), $"Spoof Platform To {SidaSpoofer.platforms[SidaSpoofer.selectedPlatform]}"))
+                    if (GUI.Button(new Rect(0, 80, 467, 30), "Windows Sound"))
+                    {
+                        MiscFeatures.WindowsNotificationExploit();
+                    }
+                    GUI.Label(new Rect(0, 120, 467, 30), "Spoofing:");
+                    if (GUI.Button(new Rect(0, 140, 467, 20), $"Spoof Platform To {SidaSpoofer.platforms[SidaSpoofer.selectedPlatform]}"))
                     {
                         SidaSpoofer.selectedPlatform = (SidaSpoofer.selectedPlatform + 1) % SidaSpoofer.platforms.Length;
                     }
