@@ -114,7 +114,7 @@ namespace SidaMenu
                     {
                         MiscFeatures.RedChat();
                     }
-                    if (GUI.Button(new Rect(0, 80, 467, 30), "Windows Sound"))
+                    if (GUI.Button(new Rect(0, 100, 467, 30), "Windows Sound Exploit"))
                     {
                         MiscFeatures.WindowsNotificationExploit();
                     }

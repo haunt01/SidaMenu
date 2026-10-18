@@ -88,7 +88,8 @@ namespace SidaMenu
             mw.Recycle();
         }
 
-        public static void WindowsNotificationExploit() // only works if someone is using Hydra.
+        // This feature only works when someone is using HydraMenu or any kind of ModMenu/tool that uses a ChatLogger
+        public static void WindowsNotificationExploit()
         {
             if (AmongUsClient.Instance == null) return;
             if (PlayerControl.LocalPlayer == null) return;
