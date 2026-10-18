@@ -5,3 +5,9 @@
 SidaMenu is a AmongUs mod that aims to give the best experience to the user with new features upcoming.
 
 We have a discord so you can share your ideas! https://discord.gg/gaQvGxK5F8
+
+# Features
+- Be Invisible
+- Red Quick Chat
+- Windows Sound Exploit (Only works if the other user is using Hydra)
+and more!
