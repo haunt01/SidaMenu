@@ -3,7 +3,7 @@
   <img src="sidapng.png" alt="sidapng" width="500"> <br>
 </p>
 
-# ⚠️CURRENTLY ON DEVELOPMENT⚠️
+<h1 align="center">:warning:CURRENTLY ON DEVELOPMENT:warning:</h1>
 
 SidaMenu is a Among Us mod that aims to give the best experience to the user with new features upcoming.
 
