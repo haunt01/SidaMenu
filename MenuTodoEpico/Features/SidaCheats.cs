@@ -18,7 +18,20 @@ namespace SidaMenu
                 PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(worldPos);
             }
         }
-    }   
+
+        [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.TrueSpeed), MethodType.Getter)]
+        public static class SpeedPatch
+        {
+            public static void Postfix(PlayerPhysics __instance, ref float __result)
+            {
+                if (__instance.AmOwner && States.speed > 0f)
+                {
+                    __result *= States.speed;
+                }
+            }
+        }
+
+    }
 
     public class HostFeatures
     {
@@ -96,12 +109,12 @@ namespace SidaMenu
 
             try
             {
-                PlayerControl.LocalPlayer.RpcSendChat("hello\u0007\u0007\u0007");
+                PlayerControl.LocalPlayer.RpcSendChat("\u0007\u0007\u0007");
             }
             catch { }
         }
 
-        public static void Promotion()
+        public static void Promotion() // Innerslop decided to remove the chat cooldown in RpcSendChat, so we can send 6 messages at ones. Thank you Innersloth.
         {
             PlayerControl.LocalPlayer.RpcSendChat("SidaMenu is the best Mod Menu that you can get RN!\n GO get it at:\n ｈｔｔｐｓ：／／ｇｉｔｈｕｂ．ｃｏｍ／ｈａｕｎｔ０１／ＳｉｄａＭｅｎｕ");
         }

@@ -3,10 +3,9 @@
     // Self
     public static bool noClip;
     public static bool speedHack;
-    public static float speed = 10f;
+    public static float speed = 1.0f;
     public static bool tpToCursor;
-
-    // Visuals
+    public static bool fullBright;
 
     // Host
     public static bool morePlayers;
