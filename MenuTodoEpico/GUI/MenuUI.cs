@@ -80,6 +80,8 @@ namespace SidaMenu
                     States.tpToCursor = GUI.Toggle(new Rect(0, 80, 467, 17), States.tpToCursor, "Teleport to Cursor");
                     GUI.Label(new Rect(0, 100, 467, 30), "Visuals:");
                     States.fullBright = GUI.Toggle(new Rect(0, 120, 467, 17), States.fullBright, "Full Bright");
+                    States.noShadows = GUI.Toggle(new Rect(0, 140, 467, 17), States.noShadows, "No Shadows");
+                    States.killImpostors = GUI.Toggle(new Rect(0, 140, 467, 17), States.killImpostors, "Kill Impostors");
                     break;
                 case 1: // Host
                     GUILayout.Label("Ship:");

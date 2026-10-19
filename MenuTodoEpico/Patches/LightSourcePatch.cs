@@ -13,5 +13,17 @@ namespace SidaMenu
                 __result = 50f;
             }
         }
+
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))] // tank iu antigravity
+        public static class RemoveShadowQuadPatch
+        {
+            public static void Postfix(HudManager __instance)
+            {
+                if (__instance.ShadowQuad != null && __instance.ShadowQuad.gameObject.activeSelf == States.noShadows)
+                {
+                    __instance.ShadowQuad.gameObject.SetActive(!States.noShadows);
+                }
+            }
+        }
     }
 }

@@ -31,6 +31,21 @@ namespace SidaMenu
             }
         }
 
+        [HarmonyPatch(typeof(ImpostorRole), nameof(ImpostorRole.IsValidTarget))]
+        public static class KillImpostorsPatch
+        {
+            public static void Postfix(NetworkedPlayerInfo target, ref bool __result)
+            {
+                if (!States.killImpostors) return; 
+                if (target != null && !target.Disconnected && !target.IsDead &&
+                    target.PlayerId != PlayerControl.LocalPlayer.PlayerId &&
+                    target.Object != null && !target.Object.inVent && target.Object.Visible)
+                {
+                    __result = true;
+                }
+            }
+        }
+
     }
 
     public class HostFeatures
@@ -113,6 +128,8 @@ namespace SidaMenu
             }
             catch { }
         }
+
+        
 
         public static void Promotion() // Innerslop decided to remove the chat cooldown in RpcSendChat, so we can send 6 messages at ones. Thank you Innersloth.
         {

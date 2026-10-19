@@ -6,6 +6,8 @@
     public static float speed = 1.0f;
     public static bool tpToCursor;
     public static bool fullBright;
+    public static bool noShadows;
+    public static bool killImpostors;
 
     // Host
     public static bool morePlayers;
