@@ -46,7 +46,11 @@ namespace SidaMenu
 
             //calls
             SelfFeatures.Teleport();
-            HostFeatures.MorePlayers(255);
+            BepInEx.Logging.Logger.CreateLogSource("SidaMenu").LogInfo($"ShipStatus: {ShipStatus.Instance}");
+            if (ShipStatus.Instance != null)
+            {
+                GameFeatures.Sabotages(ShipStatus.Instance);
+            }
 
             // toggle calls
             States.unlockSkins = true;
@@ -88,7 +92,23 @@ namespace SidaMenu
                     States.killImpostors = GUI.Toggle(new Rect(0, 180, 467, 17), States.killImpostors, "Kill Impostors");
                     break;
                 case 1: // Game
-
+                    GUILayout.Label("Ship:");
+                    if (GUI.Button(new Rect(0, 20, 467, 30), "Call Meeting"))
+                    {
+                        GameFeatures.CallMeeting();
+                    }
+                    if (GUI.Button(new Rect(0, 60, 467, 30), "Kick Players of Vent"))
+                    {
+                        GameFeatures.KickVent();
+                    }
+                    GUI.Label(new Rect(0, 100, 467, 30), "Sabotages:");
+                    States.sabotageElectricty = GUI.Toggle(new Rect(0, 120, 467, 20), States.sabotageElectricty, "Sabotage Electricity");
+                    States.sabotageReactor = GUI.Toggle(new Rect(0, 140, 467, 20), States.sabotageReactor, "Sabotage Reactor");
+                    States.sabotageOxygen = GUI.Toggle(new Rect(0, 160, 467, 20), States.sabotageOxygen, "Sabotage Oxygen");
+                    States.sabotageComms = GUI.Toggle(new Rect(0, 180, 467, 20), States.sabotageComms, "Sabotage Comms");
+                    States.sabotageLab = GUI.Toggle(new Rect(0, 200, 467, 20), States.sabotageLab, "Sabotage Lab");
+                    States.sabotageHeli = GUI.Toggle(new Rect(0, 220, 467, 20), States.sabotageHeli, "Sabotage Heli");
+                    States.sabotageMushroomMixup = GUI.Toggle(new Rect(0, 240, 467, 20), States.sabotageMushroomMixup, "Mushroom Mixup");
                     break;
                 case 2: // Host
                     GUILayout.Label("Game:");
@@ -130,8 +150,12 @@ namespace SidaMenu
                     {
                         MiscFeatures.WindowsNotificationExploit();
                     }
-                    GUI.Label(new Rect(0, 140, 467, 30), "Spoofing:");
-                    if (GUI.Button(new Rect(0, 160, 467, 20), $"Spoof Platform To {SidaSpoofer.platforms[SidaSpoofer.selectedPlatform]}"))
+                    if (GUI.Button(new Rect(0, 140, 467, 30), "VoteKick Host"))
+                    {
+                        DestroyableSingleton<VoteBanSystem>.Instance.CmdAddVote(AmongUsClient.Instance.HostId);
+                    }
+                    GUI.Label(new Rect(0, 180, 467, 30), "Spoofing:");
+                    if (GUI.Button(new Rect(0, 200, 467, 20), $"Spoof Platform To {SidaSpoofer.platforms[SidaSpoofer.selectedPlatform]}"))
                     {
                         SidaSpoofer.selectedPlatform = (SidaSpoofer.selectedPlatform + 1) % SidaSpoofer.platforms.Length;
                     }

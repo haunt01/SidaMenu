@@ -9,8 +9,16 @@
     public static bool noShadows;
     public static bool killImpostors;
 
+    // Game
+    public static bool sabotageElectricty;
+    public static bool sabotageComms;
+    public static bool sabotageHeli;
+    public static bool sabotageLab;
+    public static bool sabotageMushroomMixup;
+    public static bool sabotageOxygen;
+    public static bool sabotageReactor;
+
     // Host
-    public static bool morePlayers;
     public static bool noEndGame;
 
     // Misc
