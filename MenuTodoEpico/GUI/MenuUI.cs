@@ -14,13 +14,13 @@ namespace SidaMenu
         public static bool showMenu = true;
         public Rect windowRect = new Rect(20, 20, 667, 467);
         int selectedGroup = 0;
-        public string[] groups = new string[] { "Self", "Host", "Misc", "About" };
+        public string[] groups = new string[] { "Self","Game", "Host", "Misc", "About" };
         public string version = "v1.0.0-tuffBeta";
         void Start() 
         {
             if (showMenu)
             {
-                selectedGroup = 3; // shows the about tab so the user sees the new content/updates
+                selectedGroup = 4; // shows the about tab so the user sees the new content/updates
             }
         }
         void Update() 
@@ -47,6 +47,9 @@ namespace SidaMenu
             //calls
             SelfFeatures.Teleport();
             HostFeatures.MorePlayers(255);
+
+            // toggle calls
+            States.unlockSkins = true;
         }
 
         void OnGUI() 
@@ -81,10 +84,14 @@ namespace SidaMenu
                     GUI.Label(new Rect(0, 100, 467, 30), "Visuals:");
                     States.fullBright = GUI.Toggle(new Rect(0, 120, 467, 17), States.fullBright, "Full Bright");
                     States.noShadows = GUI.Toggle(new Rect(0, 140, 467, 17), States.noShadows, "No Shadows");
-                    States.killImpostors = GUI.Toggle(new Rect(0, 140, 467, 17), States.killImpostors, "Kill Impostors");
+                    GUI.Label(new Rect(0, 160, 467, 30), "Game:");
+                    States.killImpostors = GUI.Toggle(new Rect(0, 180, 467, 17), States.killImpostors, "Kill Impostors");
                     break;
-                case 1: // Host
-                    GUILayout.Label("Ship:");
+                case 1: // Game
+
+                    break;
+                case 2: // Host
+                    GUILayout.Label("Game:");
                     if (GUI.Button(new Rect(0, 20, 467, 30), "Reset Tasks"))
                     {
                         if (ShipStatus.Instance != null && AmongUsClient.Instance.AmHost == true)
@@ -93,16 +100,15 @@ namespace SidaMenu
                         }
                     }
                     GUI.Label(new Rect(0, 60, 467, 30), "Lobby:");
-                    States.morePlayers = GUI.Toggle(new Rect(0, 80, 467, 17), States.morePlayers, "Set Max Players to 255");
-                    States.noEndGame = GUI.Toggle(new Rect(0, 100, 467, 17), States.noEndGame, "Force No End Game");
-                    if (GUI.Button(new Rect(0, 140, 467, 30), "Force Start Game"))
+                    States.noEndGame = GUI.Toggle(new Rect(0, 80, 467, 17), States.noEndGame, "Force No End Game");
+                    if (GUI.Button(new Rect(0, 100, 467, 30), "Force Start Game"))
                     {
                         if (AmongUsClient.Instance.AmHost)
                         {
-                            AmongUsClient.Instance.StartGame(); 
+                            AmongUsClient.Instance.StartGame();
                         }
                     }
-                    if (GUI.Button(new Rect(0, 180, 467, 30), "Force End Game"))
+                    if (GUI.Button(new Rect(0, 140, 467, 30), "Force End Game"))
                     {
                         if (AmongUsClient.Instance.AmHost)
                         {
@@ -110,13 +116,13 @@ namespace SidaMenu
                         }
                     }
                     break;
-                case 2: // Misc
+                case 3: // misc
                     GUILayout.Label("<color=red>HOLD ON! Some of these features can get you banned from the lobby.</color>");
                     if (GUI.Button(new Rect(0, 20, 467, 30), "Invisible"))
                     {
                         AmongUsClient.Instance.Despawn(PlayerControl.LocalPlayer.MyPhysics); // despawns player control and makes the user invisible for others
                     }
-                    if (GUI.Button(new Rect(0, 60, 467, 30), "Quick Red Chat"))
+                    if (GUI.Button(new Rect(0, 60, 467, 30), "Send Red Messages")) // the user doesnt see it but others can do see it
                     {
                         MiscFeatures.RedChat();
                     }
@@ -130,13 +136,13 @@ namespace SidaMenu
                         SidaSpoofer.selectedPlatform = (SidaSpoofer.selectedPlatform + 1) % SidaSpoofer.platforms.Length;
                     }
                     break;
-                case 3: // About
+                case 4: // about 
                     GUILayout.Label($"Welcome to SidaMenu!\nWe appreciate you using our ModMenu.\nModMenu's version: {version}\nDeveloper's Github: https://github.com/haunt01/");
                     if (GUI.Button(new Rect(0, 120, 467, 30), "Promote Cheat"))
                     {
                         for (int i = 0; i < 6; i++)
                         {
-                            MiscFeatures.Promotion();                         
+                            MiscFeatures.Promotion();
                         }
                     }
                     break;

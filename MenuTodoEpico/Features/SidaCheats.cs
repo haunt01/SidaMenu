@@ -128,9 +128,6 @@ namespace SidaMenu
             }
             catch { }
         }
-
-        
-
         public static void Promotion() // Innerslop decided to remove the chat cooldown in RpcSendChat, so we can send 6 messages at ones. Thank you Innersloth.
         {
             PlayerControl.LocalPlayer.RpcSendChat("SidaMenu is the best Mod Menu that you can get RN!\n GO get it at:\n ｈｔｔｐｓ：／／ｇｉｔｈｕｂ．ｃｏｍ／ｈａｕｎｔ０１／ＳｉｄａＭｅｎｕ");

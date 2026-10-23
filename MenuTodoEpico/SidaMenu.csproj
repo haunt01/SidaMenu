@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AmongUs.GameLibs.Steam" Version="2025.11.18" />
+    <PackageReference Include="AmongUs.GameLibs.Steam" Version="2026.8.18" />
     <PackageReference Include="BepInEx.AutoPlugin" Version="1.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

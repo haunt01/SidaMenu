@@ -14,6 +14,8 @@
     public static bool noEndGame;
 
     // Misc
+    public static bool gameOver;
+    public static bool unlockSkins;
 
     // Spoofing
     public static bool spoofPlatform;
