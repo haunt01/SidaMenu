@@ -46,6 +46,30 @@ namespace SidaMenu
             }
         }
 
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.IsKillTimerEnabled), MethodType.Getter)]
+        public static class CooldownInVentsPatch
+        {
+            public static void Postfix(PlayerControl __instance, ref bool __result)
+            {
+                if (__result) return;
+                if (States.cooldownInVents && __instance.inVent && __instance.Data != null && !__instance.Data.IsDead)
+                {
+                    if (MeetingHud.Instance == null
+                        && ExileController.Instance == null
+                        && IntroCutscene.Instance == null
+                        && PlayerCustomizationMenu.Instance == null)
+                    {
+                        if (!DestroyableSingleton<HudManager>.InstanceExists ||
+                            (!DestroyableSingleton<HudManager>.Instance.KillOverlay.IsOpen && !DestroyableSingleton<HudManager>.Instance.IsIntroDisplayed))
+                        {
+                            __result = true;
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 
     public class GameFeatures
@@ -68,98 +92,130 @@ namespace SidaMenu
         private static bool lastOxygenState = false;
         private static bool lastCommsState = false;
         private static bool lastMushroomState = false;
-        private static bool lastHeliState = false;
-        private static bool lastLabState = false;
-
         public static void Sabotages(ShipStatus shipStatus)
         {
-            if (shipStatus == null) return;
-
-            // Electrical
+            if (shipStatus == null || shipStatus.Systems == null) return;
             if (States.sabotageElectricty != lastElecState)
             {
-                var elecSys = shipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                if (!States.sabotageElectricty)
+                if (shipStatus.Systems.ContainsKey(SystemTypes.Electrical))
                 {
-                    for (var i = 0; i < 5; i++)
+                    var elecSys = shipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (States.sabotageElectricty)
                     {
-                        var switchMask = 1 << (i & 0x1F);
-                        if ((elecSys.ActualSwitches & switchMask) != (elecSys.ExpectedSwitches & switchMask))
-                            shipStatus.RpcUpdateSystem(SystemTypes.Electrical, (byte)i);
-                    }
-                }
-                else
-                {
-                    byte b = 4;
-                    for (var i = 0; i < 5; i++)
-                    {
-                        if (BoolRange.Next(0.5f))
-                            b |= (byte)(1 << i);
-                    }
-                    shipStatus.RpcUpdateSystem(SystemTypes.Electrical, (byte)(b | 128));
-                }
-                lastElecState = States.sabotageElectricty;
-            }
-
-            // Reactor
-            if (States.sabotageReactor != lastReactorState)
-            {
-                byte mapId = (byte)GameOptionsManager.Instance.CurrentGameOptions.MapId;
-                BepInEx.Logging.Logger.CreateLogSource("SidaMenu").LogInfo($"Sabotaging reactor on map {mapId}");
-
-                switch (mapId)
-                {
-                    case 2:
-                        shipStatus.RpcUpdateSystem(SystemTypes.Laboratory, States.sabotageReactor ? (byte)128 : (byte)16);
-                        break;
-                    case 4:
-                        if (States.sabotageReactor)
-                            shipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 128);
-                        else
-                        {
-                            shipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, (byte)(16 | 0));
-                            shipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, (byte)(16 | 1));
-                        }
-                        break;
-                    default:
-                        shipStatus.RpcUpdateSystem(SystemTypes.Reactor, States.sabotageReactor ? (byte)128 : (byte)16);
-                        break;
-                }
-                lastReactorState = States.sabotageReactor;
-            }
-
-            // Oxygen
-            if (States.sabotageOxygen != lastOxygenState)
-            {
-                shipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, States.sabotageOxygen ? (byte)128 : (byte)16);
-                lastOxygenState = States.sabotageOxygen;
-            }
-
-            // Comms
-            if (States.sabotageComms != lastCommsState)
-            {
-                shipStatus.RpcUpdateSystem(SystemTypes.Comms, States.sabotageComms ? (byte)128 : (byte)0);
-                lastCommsState = States.sabotageComms;
-            }
-
-            // Mushroom Mixup
-            if (States.sabotageMushroomMixup != lastMushroomState)
-            {
-                byte mapId = (byte)GameOptionsManager.Instance.CurrentGameOptions.MapId;
-
-                if (States.sabotageMushroomMixup != lastMushroomState)
-                {
-                    if (mapId != 5)
-                    {
-                        HudManager.Instance.Notifier.AddDisconnectMessage("Fungle not present on this map");
-                        States.sabotageMushroomMixup = false;
+                        shipStatus.RpcUpdateSystem(SystemTypes.Electrical, (byte)(0x1F | 128));
                     }
                     else
                     {
-                        shipStatus.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, States.sabotageMushroomMixup ? (byte)1 : (byte)0);
+                        byte diff = (byte)(elecSys.ActualSwitches ^ elecSys.ExpectedSwitches);
+                        if (diff != 0)
+                        {
+                            shipStatus.RpcUpdateSystem(SystemTypes.Electrical, (byte)(diff | 128));
+                        }
                     }
-                    lastMushroomState = States.sabotageMushroomMixup;
                 }
+                lastElecState = States.sabotageElectricty;
+            }
+            if (States.sabotageReactor != lastReactorState)
+            {
+                if (shipStatus.Systems.ContainsKey(SystemTypes.HeliSabotage))
+                {
+                    var heliSys = shipStatus.Systems[SystemTypes.HeliSabotage].Cast<HeliSabotageSystem>();
+                    if (States.sabotageReactor)
+                    {
+                        shipStatus.RpcUpdateSystem(SystemTypes.Sabotage, (byte)58);
+                        shipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 128);
+                    }
+                    else
+                    {
+                        shipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, (byte)(16 | 0));
+                        shipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, (byte)(16 | 1));
+                        heliSys.ClearSabotage();
+                    }
+                }
+                else if (shipStatus.Systems.ContainsKey(SystemTypes.Laboratory))
+                {
+                    if (States.sabotageReactor)
+                    {
+                        shipStatus.RpcUpdateSystem(SystemTypes.Sabotage, (byte)21);
+                        shipStatus.RpcUpdateSystem(SystemTypes.Laboratory, (byte)128);
+                    }
+                    else
+                    {
+                        shipStatus.RpcUpdateSystem(SystemTypes.Laboratory, (byte)16);
+                    }
+                }
+                else if (shipStatus.Systems.ContainsKey(SystemTypes.Reactor))
+                {
+                    if (States.sabotageReactor)
+                    {
+                        shipStatus.RpcUpdateSystem(SystemTypes.Sabotage, (byte)3);
+                        shipStatus.RpcUpdateSystem(SystemTypes.Reactor, (byte)128);
+                    }
+                    else
+                    {
+                        shipStatus.RpcUpdateSystem(SystemTypes.Reactor, (byte)16);
+                    }
+                }
+                lastReactorState = States.sabotageReactor;
+            }
+            if (States.sabotageOxygen != lastOxygenState)
+            {
+                if (shipStatus.Systems.ContainsKey(SystemTypes.LifeSupp))
+                {
+                    shipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, States.sabotageOxygen ? (byte)128 : (byte)16);
+                }
+                else if (States.sabotageOxygen)
+                {
+                    HudManager.Instance?.Notifier?.AddDisconnectMessage("Oxygen not present on this map");
+                    States.sabotageOxygen = false;
+                }
+                lastOxygenState = States.sabotageOxygen;
+            }
+            if (States.sabotageComms != lastCommsState)
+            {
+                if (shipStatus.Systems.ContainsKey(SystemTypes.Comms))
+                {
+                    byte mapId = (byte)GameOptionsManager.Instance.CurrentGameOptions.MapId;
+                    bool isHqComms = (mapId == 1 || mapId == 5);
+                    if (isHqComms)
+                    {
+                        if (States.sabotageComms)
+                        {
+                            shipStatus.RpcUpdateSystem(SystemTypes.Comms, 128);
+                        }
+                        else
+                        {
+                            shipStatus.RpcUpdateSystem(SystemTypes.Comms, (byte)(16 | 0));
+                            shipStatus.RpcUpdateSystem(SystemTypes.Comms, (byte)(16 | 1));
+                        }
+                    }
+                    else
+                    {
+                        shipStatus.RpcUpdateSystem(SystemTypes.Comms, States.sabotageComms ? (byte)128 : (byte)0);
+                    }
+                }
+                lastCommsState = States.sabotageComms;
+            }
+            if (States.sabotageMushroomMixup != lastMushroomState)
+            {
+                if (shipStatus.Systems.ContainsKey(SystemTypes.MushroomMixupSabotage))
+                {
+                    if (States.sabotageMushroomMixup)
+                    {
+                        shipStatus.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 1);
+                    }
+                    else
+                    {
+                        var mushSys = shipStatus.Systems[SystemTypes.MushroomMixupSabotage].Cast<MushroomMixupSabotageSystem>();
+                        mushSys.Deteriorate(9999f);
+                    }
+                }
+                else if (States.sabotageMushroomMixup)
+                {
+                    HudManager.Instance?.Notifier?.AddDisconnectMessage("Fungle not present on this map");
+                    States.sabotageMushroomMixup = false;
+                }
+                lastMushroomState = States.sabotageMushroomMixup;
             }
         }
     }
@@ -174,6 +230,104 @@ namespace SidaMenu
                 return !States.noEndGame;
             }
         }
+
+        private static bool wasUnlocked = false;
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+        public static class HudManagerUpdatePatch
+        {
+            public static void Postfix(HudManager __instance)
+            {
+                if (PlayerControl.LocalPlayer?.Data?.Role == null) return;
+                var role = PlayerControl.LocalPlayer.Data.Role;
+                if (!States.unlockKillButton)
+                {
+                    if (wasUnlocked)
+                    {
+                        wasUnlocked = false;
+                        if (!role.IsImpostor)
+                        {
+                            role.CanUseKillButton = false;
+                            if (__instance.KillButton != null)
+                            {
+                                __instance.KillButton.SetTarget(null);
+                                __instance.KillButton.Hide();
+                            }
+                        }
+                    }
+                    return;
+                }
+                if (!wasUnlocked)
+                {
+                    wasUnlocked = true;
+                    role.CanUseKillButton = true;
+                    PlayerControl.LocalPlayer.SetKillTimer(0f); 
+                }
+                role.CanUseKillButton = true;
+                // Asegura que esté visible mientras esté activo
+                if (__instance.KillButton != null && !__instance.KillButton.gameObject.activeSelf)
+                {
+                    __instance.KillButton.Show();
+                }
+            }
+        }
+        [HarmonyPatch(typeof(KillButton), nameof(KillButton.SetTarget))]
+        public static class KillButtonSetTargetPatch
+        {
+            public static void Prefix(KillButton __instance, ref PlayerControl target)
+            {
+                if (!States.unlockKillButton) return;
+                if (target == null && PlayerControl.LocalPlayer != null && !PlayerControl.LocalPlayer.Data.IsDead)
+                {
+                    target = GetClosestLivingPlayer(PlayerControl.LocalPlayer);
+                }
+            }
+            private static PlayerControl GetClosestLivingPlayer(PlayerControl localPlayer)
+            {
+                if (GameManager.Instance?.LogicOptions == null) return null;
+                float maxDistance = GameManager.Instance.LogicOptions.GetKillDistance();
+                Vector2 myPos = localPlayer.GetTruePosition();
+                PlayerControl closest = null;
+                float closestDist = float.MaxValue;
+                foreach (PlayerControl pc in PlayerControl.AllPlayerControls)
+                {
+                    if (pc == null || pc == localPlayer) continue;
+                    if (pc.Data == null || pc.Data.IsDead || pc.Data.Disconnected) continue;
+                    if (pc.inVent || !pc.Visible || pc.Collider == null || !((Behaviour)pc.Collider).enabled) continue;
+                    Vector2 diff = pc.GetTruePosition() - myPos;
+                    float dist = diff.magnitude;
+                    if (dist <= maxDistance && dist < closestDist)
+                    {
+                        if (!PhysicsHelpers.AnyNonTriggersBetween(myPos, diff.normalized, dist, Constants.ShipAndObjectsMask))
+                        {
+                            closestDist = dist;
+                            closest = pc;
+                        }
+                    }
+                }
+                return closest;
+            }
+        }
+
+        [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
+        public static class KillButtonDoClickPatch
+        {
+            public static bool Prefix(KillButton __instance)
+            {
+                if (!States.unlockKillButton) return true;
+                if (__instance.isActiveAndEnabled && __instance.Target != null && !__instance.IsOnCooldown
+                    && PlayerControl.LocalPlayer != null && !PlayerControl.LocalPlayer.Data.IsDead && PlayerControl.LocalPlayer.CanMove)
+                {
+                    PlayerControl target = __instance.Target;
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
+                    float killCooldown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+                    PlayerControl.LocalPlayer.SetKillTimer(killCooldown);
+                    __instance.SetTarget(null);
+                    return false;
+                }
+                return true;
+            }
+        }
+
     }
 
     public class MiscFeatures

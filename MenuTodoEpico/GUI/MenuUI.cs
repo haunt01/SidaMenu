@@ -46,7 +46,6 @@ namespace SidaMenu
 
             //calls
             SelfFeatures.Teleport();
-            BepInEx.Logging.Logger.CreateLogSource("SidaMenu").LogInfo($"ShipStatus: {ShipStatus.Instance}");
             if (ShipStatus.Instance != null)
             {
                 GameFeatures.Sabotages(ShipStatus.Instance);
@@ -90,6 +89,7 @@ namespace SidaMenu
                     States.noShadows = GUI.Toggle(new Rect(0, 140, 467, 17), States.noShadows, "No Shadows");
                     GUI.Label(new Rect(0, 160, 467, 30), "Game:");
                     States.killImpostors = GUI.Toggle(new Rect(0, 180, 467, 17), States.killImpostors, "Kill Impostors");
+                    States.cooldownInVents = GUI.Toggle(new Rect(0, 200, 467, 17), States.cooldownInVents, "Cooldown In Vents");
                     break;
                 case 1: // Game
                     GUILayout.Label("Ship:");
@@ -106,9 +106,7 @@ namespace SidaMenu
                     States.sabotageReactor = GUI.Toggle(new Rect(0, 140, 467, 20), States.sabotageReactor, "Sabotage Reactor");
                     States.sabotageOxygen = GUI.Toggle(new Rect(0, 160, 467, 20), States.sabotageOxygen, "Sabotage Oxygen");
                     States.sabotageComms = GUI.Toggle(new Rect(0, 180, 467, 20), States.sabotageComms, "Sabotage Comms");
-                    States.sabotageLab = GUI.Toggle(new Rect(0, 200, 467, 20), States.sabotageLab, "Sabotage Lab");
-                    States.sabotageHeli = GUI.Toggle(new Rect(0, 220, 467, 20), States.sabotageHeli, "Sabotage Heli");
-                    States.sabotageMushroomMixup = GUI.Toggle(new Rect(0, 240, 467, 20), States.sabotageMushroomMixup, "Mushroom Mixup");
+                    States.sabotageMushroomMixup = GUI.Toggle(new Rect(0, 200, 467, 20), States.sabotageMushroomMixup, "Mushroom Mixup");
                     break;
                 case 2: // Host
                     GUILayout.Label("Game:");
@@ -119,16 +117,17 @@ namespace SidaMenu
                             ShipStatus.Instance.Begin(); // this resets shipstatus and makes the players think the tasks has been resetted 
                         }
                     }
-                    GUI.Label(new Rect(0, 60, 467, 30), "Lobby:");
-                    States.noEndGame = GUI.Toggle(new Rect(0, 80, 467, 17), States.noEndGame, "Force No End Game");
-                    if (GUI.Button(new Rect(0, 100, 467, 30), "Force Start Game"))
+                    States.unlockKillButton = GUI.Toggle(new Rect(0, 60, 467, 30), States.unlockKillButton, "Unlock Kill Button");
+                    GUI.Label(new Rect(0, 80, 467, 30), "Lobby:");
+                    States.noEndGame = GUI.Toggle(new Rect(0, 100, 467, 17), States.noEndGame, "Force No End Game");
+                    if (GUI.Button(new Rect(0, 120, 467, 30), "Force Start Game"))
                     {
                         if (AmongUsClient.Instance.AmHost)
                         {
                             AmongUsClient.Instance.StartGame();
                         }
                     }
-                    if (GUI.Button(new Rect(0, 140, 467, 30), "Force End Game"))
+                    if (GUI.Button(new Rect(0, 160, 467, 30), "Force End Game"))
                     {
                         if (AmongUsClient.Instance.AmHost)
                         {

@@ -8,6 +8,7 @@
     public static bool fullBright;
     public static bool noShadows;
     public static bool killImpostors;
+    public static bool cooldownInVents;
 
     // Game
     public static bool sabotageElectricty;
@@ -20,6 +21,7 @@
 
     // Host
     public static bool noEndGame;
+    public static bool unlockKillButton;
 
     // Misc
     public static bool gameOver;
